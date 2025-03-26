@@ -62,7 +62,49 @@ public class App implements CommandLineRunner {
 			out.println(t.getId() + " - " + t.getNome() + " - " + t.getCpf() );
 		}
 	}
-	public void ler() {} 
-	public void alterar() {}
-	public void apagar() {}
+	public void ler() {
+        out.print("# Digite o id do titular que deseja ler: ");
+        long id = Long.parseLong(entrada.nextLine());
+        Titular t = titularRepo.findById(id).orElse(null);
+        if (t != null) {
+            out.println("Titular encontrado:");
+            out.println(t.getId() + " - " + t.getNome() + " - " + t.getCpf());
+        } else {
+            out.println("## Titular com id " + id + " não encontrado! ##");
+        }
+    }
+
+    public void alterar() {
+        out.print("# Digite o ID do titular que deseja alterar: ");
+        long id = Long.parseLong(entrada.nextLine());
+        Titular t = titularRepo.findById(id).orElse(null);
+        if (t != null) {
+            out.println("Titular encontrado:");
+            out.println(t.getId() + " - " + t.getNome() + " - " + t.getCpf());
+            out.print("# Novo nome do titular: ");
+            String novoNome = entrada.nextLine();
+            out.print("# Novo CPF do titular: ");
+            String novoCpf = entrada.nextLine();
+            t.setNome(novoNome);
+            t.setCpf(novoCpf);
+            titularRepo.save(t);
+            out.println("## Titular atualizado com sucesso! ##");
+        } else {
+            out.println("## Titular com ID " + id + " não encontrado! ##");
+        }
+    }
+
+    public void apagar() {
+        out.print("# Digite o ID do titular que deseja apagar: ");
+        long id = Long.parseLong(entrada.nextLine());
+        Titular t = titularRepo.findById(id).orElse(null);
+        if (t != null) {
+            out.println("Titular encontrado:");
+            out.println(t.getId() + " - " + t.getNome() + " - " + t.getCpf());
+            titularRepo.delete(t);
+            out.println("## Titular apagado com sucesso! ##");
+        } else {
+            out.println("## Titular com ID " + id + " não encontrado! ##");
+        }
+    }
 }
